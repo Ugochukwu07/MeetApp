@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+			integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk="
+			crossorigin="anonymous"
+		/>
+		<link 
+			rel="stylesheet" 
+			href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" 
+			integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" 
+			crossorigin="anonymous" 
+			referrerpolicy="no-referrer" 
+		/>
+		<link rel="stylesheet" href="css/style.css" />
+		<title>ChatCord App</title>
+	</head>
+	<body>
+		<div class="join-container">
+			<header class="join-header">
+				<h1><i class="fas fa-smile"></i> Meet App</h1>
+			</header>
+			<form action="chat.html" data-parsley-validate>
+					<main class="join-main">
+					<div class="form-group">
+						<label for="username">Username*</label>
+						<input
+							type="text"
+							name="username"
+							id="username"
+							class="form-control"
+							placeholder="Enter username..."
+							data-parsley-required
+						/>
+					</div>
+					<div class="form-group">
+						<label for="room">Room Name*</label>
+						<input 
+							type="text" 
+							name="room" 
+							data-parsley-required 
+							class="form-control"
+							placeholder="Enter Room Name..." 
+							id="room"
+						>
+					</div>
+
+				</main>
+					<div class="join-header rounded-0">
+						<div class=" btn-group">
+							<button type="submit" class="btn btn-success border-white mt-3">Join Chat</button>
+							<button type="button" id="copyRoomLink" class="btn btn-warning mt-3">Copy Room Link</button>
+						</div>
+					</div>
+
+				</form>
+		</div>
+
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.2/qs.min.js"
+			integrity="sha256-TDxXjkAUay70ae/QJBEpGKkpVslXaHHayklIVglFRT4="
+			crossorigin="anonymous"
+	 	></script>
+		 <script 
+		 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" 
+			integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" 
+			crossorigin="anonymous" 
+			referrerpolicy="no-referrer"
+		></script>
+		<script 
+			src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" 
+			integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" 
+			crossorigin="anonymous" 
+			referrerpolicy="no-referrer"
+		></script>
+		 <script 
+		 	src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js" 
+			integrity="sha512-eyHL1atYNycXNXZMDndxrDhNAegH2BDWt1TmkXJPoGf1WLlNYt08CSjkqF5lnCRmdm3IrkHid8s2jOUY4NIZVQ==" 
+			crossorigin="anonymous" 
+			referrerpolicy="no-referrer"
+		></script>
+		<script 
+			src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" 
+			integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" 
+			crossorigin="anonymous" 
+			referrerpolicy="no-referrer"
+		></script>
+		<script>
+			// Get room from URL
+			const { room } = Qs.parse(location.search, {
+				ignoreQueryPrefix: true,
+			});
+
+			if($('#room') != undefined){
+				$('#room').val(room)
+			}
+
+			$('#copyRoomLink').on('click', function(e){
+				e.preventDefault();
+				var room_required = $('#room').parsley();
+				room_required.validate()
+				if(room_required.isValid()){
+					const link = `${window.location.hostname}:${window.location.port}/index.html?room=${$('#room').val()}`
+					if(navigator.clipboard.writeText(link)){
+						swal({
+							title: "Copied",
+							text: "Room Link Copied",
+							icon: 'success'
+						  });
+					};
+				}else{
+					swal({
+						title: "Oops",
+						text: "Room Felid is required",
+						icon: 'warning'
+					  });
+				}
+			});
+		</script>
+	</body>
+</html>
